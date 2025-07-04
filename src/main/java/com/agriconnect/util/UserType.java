@@ -1,4 +1,4 @@
-package com.agriconnect.Util;
+package com.agriconnect.util;
 
 public enum UserType {
     CITIZEN,

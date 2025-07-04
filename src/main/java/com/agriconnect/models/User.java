@@ -1,6 +1,6 @@
-package com.agriconnect.Models;
+package com.agriconnect.models;
 
-import com.agriconnect.Util.UserType;
+import com.agriconnect.util.UserType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -25,8 +25,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User  implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotBlank(message = "Password is required")
     private String password;

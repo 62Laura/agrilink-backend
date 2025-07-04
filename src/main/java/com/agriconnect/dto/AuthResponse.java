@@ -1,6 +1,6 @@
-package com.agriconnect.DTO;
+package com.agriconnect.dto;
 
-import com.agriconnect.Util.UserType;
+import com.agriconnect.util.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,6 +1,6 @@
-package com.agriconnect.Models;
+package com.agriconnect.models;
 
-import com.agriconnect.Util.ApplicationStatus;
+import com.agriconnect.util.ApplicationStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +18,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FarmerApplication {
     @Id
-    @GeneratedValue(strategy =GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

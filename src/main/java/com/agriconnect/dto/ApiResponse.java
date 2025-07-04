@@ -1,4 +1,4 @@
-package com.agriconnect.DTO;
+package com.agriconnect.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
