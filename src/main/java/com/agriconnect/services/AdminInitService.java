@@ -28,7 +28,7 @@ public class AdminInitService implements CommandLineRunner {
             User admin = User.builder()
                     .email(adminEmail)
                     .password(passwordEncoder.encode("Password@123"))
-                    .fullName("AgriConnect Admin")
+                    .fullName("AgriLink Admin")
                     .userType(UserType.ADMIN)
                     .isApproved(true)
                     .isActive(true)

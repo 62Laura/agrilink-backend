@@ -1,12 +1,19 @@
 package com.agriconnect.controllers;
 
 import com.agriconnect.dto.*;
+import com.agriconnect.models.MembershipApplication;
+import com.agriconnect.models.User;
+import com.agriconnect.repositories.UserRepository;
 import com.agriconnect.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -16,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-
+    private final UserRepository userRepository;
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         try {
@@ -46,15 +53,26 @@ public class AuthController {
     }
 
     @PostMapping("/apply/farmer")
-    public ResponseEntity<ApiResponse> farmerApplication(@Valid @RequestBody FarmerApplicationRequest request) {
+    public ResponseEntity<ApiResponse> farmerApplication(@Valid @RequestBody MembershipApplicationRequest request) {
         try {
-            ApiResponse response = authService.farmerApplication(request);
+            ApiResponse response = authService.applyForMembership(request);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error("Farmer application failed", e);
             return ResponseEntity.badRequest()
                     .body(ApiResponse.error(e.getMessage()));
         }
+    }
+    @GetMapping("/admin/membership-applications")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> listPendingApplications() {
+        List<MembershipApplication> applications = authService.getAllPendingApplications();
+        return ResponseEntity.ok(applications);
+    }
+    @PostMapping("/admin/approve-membership")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse> approveMembership(@RequestParam Long applicationId) {
+        return ResponseEntity.ok(authService.approveMembership(applicationId));
     }
 
 }

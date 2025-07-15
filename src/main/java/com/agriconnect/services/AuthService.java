@@ -1,7 +1,7 @@
 package com.agriconnect.services;
 
 import com.agriconnect.dto.*;
-import com.agriconnect.models.FarmerApplication;
+import com.agriconnect.models.MembershipApplication;
 import com.agriconnect.models.User;
 import com.agriconnect.repositories.FarmerApplicationRepository;
 import com.agriconnect.repositories.UserRepository;
@@ -15,6 +15,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -91,11 +94,10 @@ public class AuthService {
     }
 
     @Transactional
-    public ApiResponse farmerApplication(FarmerApplicationRequest request) {
+    public ApiResponse applyForMembership(MembershipApplicationRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already registered");
         }
-
 
         User user = User.builder()
                 .email(request.getEmail())
@@ -108,23 +110,41 @@ public class AuthService {
                 .isActive(true)
                 .build();
 
-        User savedUser = userRepository.save(user);
+        user = userRepository.save(user);
 
-        FarmerApplication application = FarmerApplication.builder()
-                .user(savedUser)
+        MembershipApplication application = MembershipApplication.builder()
+                .user(user)
+                .type(request.getType())
                 .farmName(request.getFarmName())
-                .farmSize(request.getFarmSize())
                 .cropTypes(request.getCropTypes())
-                .yearsOfExperience(request.getYearsOfExperience())
-                .motivation(request.getMotivation())
-                .status(ApplicationStatus.PENDING)
+                .cooperativeName(request.getCooperativeName())
+                .appliedAt(LocalDateTime.now())
                 .build();
 
         farmerApplicationRepository.save(application);
 
-        log.info("Farmer application submitted: {}", savedUser.getEmail());
-
-        return ApiResponse.success("Farmer application submitted successfully. You will receive an email once approved.", application.getId());
+        return ApiResponse.success("Membership application submitted successfully", application.getId());
     }
+    public List<MembershipApplication> getAllPendingApplications() {
+        return farmerApplicationRepository.findByStatus(ApplicationStatus.PENDING);
+    }
+    @Transactional
+    public ApiResponse approveMembership(Long applicationId) {
+        MembershipApplication application = farmerApplicationRepository
+                .findById(applicationId)
+                .orElseThrow(() -> new RuntimeException("Application not found"));
+
+        if (application.getStatus() != ApplicationStatus.PENDING) {
+            throw new RuntimeException("Application already processed");
+        }
+        application.setStatus(ApplicationStatus.APPROVED);
+        application.setReviewedAt(LocalDateTime.now());
+        User user = application.getUser();
+        userRepository.save(user);
+       farmerApplicationRepository.save(application);
+        return ApiResponse.success("Application approved successfully");
+    }
+
+
 }
 
