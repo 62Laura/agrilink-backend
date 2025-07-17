@@ -24,5 +24,11 @@ public class ProductController {
         ApiResponse response = productService.addProduct(request, farmerId);
         return ResponseEntity.ok(response);
     }
+@PutMapping("/publish")
+    @PreAuthorize("hasRole('FARMER')")
+    public ResponseEntity<ApiResponse> publishProduct(@PathVariable Long productId) {
 
+        ApiResponse response = productService.publishProduct(productId);
+        return ResponseEntity.ok(response);
+    }
 }
