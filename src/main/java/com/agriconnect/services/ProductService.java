@@ -43,7 +43,16 @@ public class ProductService {
        productRepository.save(product);
         return ApiResponse.success("Product added successfully", product.getId());
     }
+@Transactional
+    public ApiResponse publishProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
+        product.setStatus(ProductStatus.PUBLISHED);
+        productRepository.save(product);
+
+        return ApiResponse.success("Product published successfully", product.getId());
+    }
 
 
 }
