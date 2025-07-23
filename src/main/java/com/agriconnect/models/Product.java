@@ -59,7 +59,7 @@ public class Product{
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
     @Lob
-    @Column(name = "image_base64", columnDefinition = "LONGTEXT")
+    @Column(name = "image_base64")
     private String imageBase64;
 
 
