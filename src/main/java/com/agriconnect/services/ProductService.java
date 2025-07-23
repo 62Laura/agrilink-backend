@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -43,15 +44,30 @@ public class ProductService {
        productRepository.save(product);
         return ApiResponse.success("Product added successfully", product.getId());
     }
-@Transactional
+    @Transactional
     public ApiResponse publishProduct(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         product.setStatus(ProductStatus.PUBLISHED);
         productRepository.save(product);
-
         return ApiResponse.success("Product published successfully", product.getId());
+    }
+    @Transactional
+    public ApiResponse getAllPublishedProducts() {
+        List<Product> products = productRepository.findByStatus(ProductStatus.PUBLISHED);
+        return ApiResponse.success("Published products fetched", products);
+    }
+    @Transactional
+    public ApiResponse getProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        return ApiResponse.success("Product fetched", product);
+    }
+    @Transactional
+    public ApiResponse getProductsByFarmer(Long farmerId) {
+        List<Product> products = productRepository.findByFarmerId(farmerId);
+        return ApiResponse.success("Farmer products fetched", products);
     }
 
 
