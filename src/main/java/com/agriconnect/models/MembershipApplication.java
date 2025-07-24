@@ -1,6 +1,7 @@
 package com.agriconnect.models;
 
 import com.agriconnect.util.ApplicationStatus;
+import com.agriconnect.util.MembershipType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,31 +9,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
-@Table(name = "farmer_applications")
+@Table(name = "membership_application")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FarmerApplication {
+public class MembershipApplication {
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
     private Long id;
-
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
     private String farmName;
     private String farmSize;
     private String cropTypes;
-    private Integer yearsOfExperience;
-
-    @Column(columnDefinition = "TEXT")
-    private String motivation;
-
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private ApplicationStatus status = ApplicationStatus.PENDING;
@@ -48,6 +41,11 @@ public class FarmerApplication {
     private User reviewedBy;
 
     private String rejectionReason;
+
+    @Enumerated(EnumType.STRING)
+    private MembershipType type;
+
+    private String cooperativeName;
 
     @PrePersist
     protected void onCreate() {

@@ -22,6 +22,6 @@ public class CitizenSignUpRequest {
     @NotBlank(message = "Full name is required")
     private String fullName;
 
-    private String location; // Optional
+    private String location;
 }
 
