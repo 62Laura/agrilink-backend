@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://agri-linkk.netlify.app")
 @Slf4j
 public class AuthController {
 
