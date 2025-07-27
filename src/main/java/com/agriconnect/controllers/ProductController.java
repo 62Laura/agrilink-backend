@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://agri-linkk.netlify.app")
 @Slf4j
 public class ProductController {
 
