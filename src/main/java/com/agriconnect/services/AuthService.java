@@ -140,6 +140,7 @@ public class AuthService {
         application.setStatus(ApplicationStatus.APPROVED);
         application.setReviewedAt(LocalDateTime.now());
         User user = application.getUser();
+        user.setApproved(true);
         userRepository.save(user);
        farmerApplicationRepository.save(application);
         return ApiResponse.success("Application approved successfully");
