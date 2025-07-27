@@ -34,13 +34,20 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtAuthenticationFilter jwtAuthFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(withDefaults()) //
+                .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/auth/**", "/h2-console/**", HttpMethod.OPTIONS.name()).permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/auth/**",
+                                "/public/**",
+                                "/h2-console/**",
+                                HttpMethod.OPTIONS.name()
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -50,7 +57,6 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -84,3 +90,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+

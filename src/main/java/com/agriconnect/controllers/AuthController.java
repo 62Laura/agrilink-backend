@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
@@ -22,7 +22,7 @@ public class AuthController {
     private final AuthService authService;
     private final UserRepository userRepository;
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         try {
             AuthResponse response = authService.login(request);
@@ -35,7 +35,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/signup/citizen")
+    @PostMapping("public/signup/citizen")
     public ResponseEntity<AuthResponse> citizenSignup(@Valid @RequestBody CitizenSignUpRequest request) {
         try {
             AuthResponse response = authService.citizenSignup(request);
@@ -47,8 +47,7 @@ public class AuthController {
             );
         }
     }
-
-    @PostMapping("/apply/farmer")
+    @PostMapping("public/apply/farmer")
     public ResponseEntity<ApiResponse> farmerApplication(@Valid @RequestBody MembershipApplicationRequest request) {
         try {
             ApiResponse response = authService.applyForMembership(request);
