@@ -21,9 +21,7 @@ public class ProductService {
     @Autowired
     UserRepository userRepository;
     @Transactional
-    public ApiResponse addProduct(ProductRequest request,Long userId) {
-        User farmer = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Farmer not found"));
+    public ApiResponse addProduct(ProductRequest request) {
 
         Product product = Product.builder()
                 .name(request.getName())
@@ -36,7 +34,6 @@ public class ProductService {
                 .location(request.getLocation())
                 .imageBase64(request.getImageUrl())
                 .status(ProductStatus.LISTED)
-                .farmer(farmer)
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now().plusDays(60))
                 .build();

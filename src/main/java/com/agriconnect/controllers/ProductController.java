@@ -2,6 +2,7 @@ package com.agriconnect.controllers;
 
 import com.agriconnect.dto.ApiResponse;
 import com.agriconnect.dto.ProductRequest;
+import com.agriconnect.repositories.ProductRepository;
 import com.agriconnect.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductRepository productRepository;
 
     @PostMapping("/listing")
     @PreAuthorize("hasRole('FARMER')")
-    public ResponseEntity<ApiResponse> addProduct(@RequestBody ProductRequest request,
-                                                  @RequestParam("farmerId") Long farmerId) {
-        ApiResponse response = productService.addProduct(request, farmerId);
+    public ResponseEntity<ApiResponse> addProduct(@RequestBody ProductRequest request) {
+        ApiResponse response = productService.addProduct(request);
         return ResponseEntity.ok(response);
     }
 
@@ -46,8 +47,8 @@ public class ProductController {
 
     @GetMapping("/my-products")
     @PreAuthorize("hasRole('FARMER')")
-    public ResponseEntity<ApiResponse> getFarmerProducts(@RequestParam("farmerId") Long farmerId) {
-        ApiResponse response = productService.getProductsByFarmer(farmerId);
+    public ResponseEntity<ApiResponse> getFarmerProducts() {
+        ApiResponse response = (ApiResponse) productRepository.findAll();
         return ResponseEntity.ok(response);
     }
 }
