@@ -9,7 +9,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-
+/**
+ * Membership Entity
+ */
 @Entity
 @Table(name = "membership_application")
 @Data

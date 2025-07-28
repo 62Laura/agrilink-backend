@@ -2,7 +2,6 @@ package com.agriconnect.controllers;
 
 import com.agriconnect.dto.*;
 import com.agriconnect.models.MembershipApplication;
-import com.agriconnect.repositories.UserRepository;
 import com.agriconnect.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +13,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
 
     private final AuthService authService;
-    private final UserRepository userRepository;
 
-    @PostMapping("/auth/login")
+    /**
+     * Endpoint for user login.
+     * Accepts login credentials (email, password) and returns an AuthResponse if successful.
+     */
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         try {
             AuthResponse response = authService.login(request);
@@ -35,6 +37,10 @@ public class AuthController {
         }
     }
 
+    /**
+     * Endpoint for citizen sign-up.
+     * Registers a new user with role 'CITIZEN' and returns an AuthResponse.
+     */
     @PostMapping("public/signup/citizen")
     public ResponseEntity<AuthResponse> citizenSignup(@Valid @RequestBody CitizenSignUpRequest request) {
         try {
@@ -47,6 +53,11 @@ public class AuthController {
             );
         }
     }
+
+    /**
+     * Endpoint for farmers to apply for membership.
+     * Saves the application for admin review.
+     */
     @PostMapping("public/apply/farmer")
     public ResponseEntity<ApiResponse> farmerApplication(@Valid @RequestBody MembershipApplicationRequest request) {
         try {
@@ -58,6 +69,9 @@ public class AuthController {
         }
     }
 
+    /**
+     * Admin-only endpoint to retrieve all pending farmer membership applications.
+     */
     @GetMapping("/admin/membership-applications")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<MembershipApplication>> listPendingApplications() {
@@ -65,6 +79,9 @@ public class AuthController {
         return ResponseEntity.ok(applications);
     }
 
+    /**
+     * Admin-only endpoint to approve a farmer's membership application by ID.
+     */
     @PostMapping("/admin/approve-membership")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> approveMembership(@RequestParam("applicationId") Long applicationId) {
@@ -72,4 +89,3 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 }
-

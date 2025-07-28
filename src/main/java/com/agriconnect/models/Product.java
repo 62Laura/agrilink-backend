@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
+/**
+ * Product Entity
+ */
 @Entity
 @Table(name = "products")
 @Data

@@ -16,7 +16,9 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
-
+/**
+ * User Entity
+ */
 @Entity
 @Table(name = "users")
 @Data

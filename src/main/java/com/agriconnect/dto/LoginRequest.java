@@ -3,7 +3,9 @@ package com.agriconnect.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
+/**
+ * Login Requests
+ */
 @Data
 public class LoginRequest {
     @Email(message = "Please provide a valid email")

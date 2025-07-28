@@ -2,7 +2,9 @@ package com.agriconnect.dto;
 
 import com.agriconnect.util.MembershipType;
 import lombok.Data;
-
+/**
+ * Membership application Request
+ */
 @Data
 public class MembershipApplicationRequest {
     private String email;
