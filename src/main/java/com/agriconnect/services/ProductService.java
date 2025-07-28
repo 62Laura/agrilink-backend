@@ -25,13 +25,8 @@ public class ProductService {
 
         Product product = Product.builder()
                 .name(request.getName())
-                .unit(request.getUnit())
                 .quantity(request.getQuantity())
                 .unitPrice(request.getUnitPrice())
-                .description(request.getDescription())
-                .category(request.getCategory())
-                .harvestDate(request.getHarvestDate())
-                .location(request.getLocation())
                 .imageBase64(request.getImageUrl())
                 .status(ProductStatus.LISTED)
                 .createdAt(LocalDateTime.now())
