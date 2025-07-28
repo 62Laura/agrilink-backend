@@ -19,9 +19,5 @@ public class CitizenSignUpRequest {
     @NotBlank(message = "Phone number is required")
     private String phoneNumber;
 
-    @NotBlank(message = "Full name is required")
-    private String fullName;
-
-    private String location;
 }
 

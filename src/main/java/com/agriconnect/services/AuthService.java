@@ -70,8 +70,6 @@ public class AuthService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phoneNumber(request.getPhoneNumber())
-                .fullName(request.getFullName())
-                .location(request.getLocation())
                 .userType(UserType.CITIZEN)
                 .isApproved(true)
                 .isActive(true)
